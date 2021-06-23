@@ -1,2 +1,3 @@
 # Competitive-Programming
-CP problems from various websites.
+https://codeforces.com/profile/jxu7
+https://dmoj.ca/user
