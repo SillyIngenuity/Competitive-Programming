@@ -67,7 +67,7 @@ void solve() {
     string temp = s;
     int templen = len;
     while (templen < k) {
-      // Duplicate this bitch
+      // Duplicate until templen > k then we trim 
       temp +=temp;
       templen *= 2;
     }

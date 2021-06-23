@@ -62,10 +62,10 @@ template <class F> void fill_m(vector<F> &v, int num) {
     }
   }
 }
+template <class F> F ceildiv(F a, F d) { F res = a / d; if (res * d != a) { res += 1&((a<0)^(d>0)); } return res; }
 int dx[4] = {1,0,-1,0};
 int dy[4] = {0,1,0,-1};
 void solve() {
-
 }
 int main() {
   int t;
