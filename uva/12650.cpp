@@ -65,37 +65,35 @@ template <class F> void fill_m(vector<F> &v, int num) {
 template <class F> F ceildiv(F a, F d) { F res = a / d; if (res * d != a) { res += 1&((a<0)^(d>0)); } return res; }
 int dx[4] = {1,0,-1,0};
 int dy[4] = {0,1,0,-1};
+int getint () {
+  int n;
+  cin >> n;
+  return n;
+}
 void solve() {
-  int k; cin >> k;
-  unordered_map <char,int> umap;
-  umap.reserve(k);
-  while (k--) {
-    char c; int cents; cin >> c >> cents;
-    umap[c] = cents;
-  }
-  //M line of text to shift through and calculate the cost
-  int m; cin >> m;
-  // got to add one for some reason
-  m +=1;
-  // Cents
-  int total = 0;
-  while (m--) {
-    string s; getline(cin, s);
-    rep (i, sz(s)) {
-      // start counting the money
-      if (umap.find(s[i]) != umap.end()) {
-        total += umap[s[i]];
+  int n, r;
+  while ((n = getint()) != -1 &&(r = getint()) != -1) {
+    debug(n,r);
+    if (n == r) {
+      cout << "*\n";
+      continue;
+    }
+    vi arr(1e4 + 1);
+    vi alivers;
+    rep (i, r) {
+      int temp; cin >> temp;
+      arr[temp] = 1;
+    }
+    rep (i, 1e4 + 1) {
+      if (arr[i] != 1) {
+        alivers.pb(i);
       }
     }
+    print_v(alivers);
   }
-  double dollars = (double) total / 100;
-  cout << setprecision(2) << fixed;
-  cout << dollars << "$"<< '\n';
-  return;
 }
 int main() {
-  int t;
-  cin >> t;
+  int t = 1;
   while (t--) {
     solve();
   }

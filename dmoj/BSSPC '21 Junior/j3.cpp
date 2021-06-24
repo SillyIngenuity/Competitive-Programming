@@ -66,36 +66,74 @@ template <class F> F ceildiv(F a, F d) { F res = a / d; if (res * d != a) { res 
 int dx[4] = {1,0,-1,0};
 int dy[4] = {0,1,0,-1};
 void solve() {
-  int k; cin >> k;
-  unordered_map <char,int> umap;
-  umap.reserve(k);
-  while (k--) {
-    char c; int cents; cin >> c >> cents;
-    umap[c] = cents;
-  }
-  //M line of text to shift through and calculate the cost
-  int m; cin >> m;
-  // got to add one for some reason
-  m +=1;
-  // Cents
-  int total = 0;
-  while (m--) {
-    string s; getline(cin, s);
-    rep (i, sz(s)) {
-      // start counting the money
-      if (umap.find(s[i]) != umap.end()) {
-        total += umap[s[i]];
+  int k,n; cin >> k >> n;
+  int red = 0, yellow = 0, blue = 0;
+  int cr = 0, cy = 0, cb = 0;
+  while (n--) {
+    string temp; cin >> temp;
+    rep (m,k) {
+      if (temp[m] == 'R' || temp[m] == 'O' || temp[m] == 'P' || temp[m] == 'B') {
+        if (temp[m] == 'R') {
+          cb = 0;
+          cy = 0;
+        }
+        if (temp[m] == 'O') {
+          cb = 0;
+        }
+        if (temp[m] == 'P') {
+          cy = 0;
+        }
+        if (cr == 0) {
+          red++;
+          cr++;
+        } else {
+          cr++;
+        }
+      } if (temp[m] == 'Y' || temp[m] == 'O' || temp[m] == 'G' || temp[m]== 'B') {
+        if (temp[m] == 'Y') {
+          cb = 0;
+          cr = 0;
+        }
+        if (temp[m] == 'O') {
+          cb = 0;
+        }
+        if (temp[m] == 'G') {
+          cr = 0;
+        }
+        if (cy == 0) {
+          yellow++;
+          cy++;
+        } else {
+          cy++;
+        }
+      } if (temp[m] == 'U' || temp[m] == 'G' || temp[m] == 'B') {
+        if (temp[m] == 'U') {
+          cr = 0;
+          cy = 0;
+        }
+        if (temp[m] == 'G') {
+          cr = 0;
+        }
+        if (cb == 0) {
+          blue++;
+          cb++;
+        } else {
+          cb++;
+        }
+      } if (temp[m] == '.') {
+        // just white
+        cr = 0;
+        cy = 0;
+        cb = 0;
       }
     }
+    debug(red,yellow,blue);
   }
-  double dollars = (double) total / 100;
-  cout << setprecision(2) << fixed;
-  cout << dollars << "$"<< '\n';
+  cout << red << " " << yellow << " " << blue << '\n';
   return;
 }
 int main() {
-  int t;
-  cin >> t;
+  int t = 1;
   while (t--) {
     solve();
   }

@@ -65,39 +65,51 @@ template <class F> void fill_m(vector<F> &v, int num) {
 template <class F> F ceildiv(F a, F d) { F res = a / d; if (res * d != a) { res += 1&((a<0)^(d>0)); } return res; }
 int dx[4] = {1,0,-1,0};
 int dy[4] = {0,1,0,-1};
-void solve() {
-  int k; cin >> k;
-  unordered_map <char,int> umap;
-  umap.reserve(k);
-  while (k--) {
-    char c; int cents; cin >> c >> cents;
-    umap[c] = cents;
-  }
-  //M line of text to shift through and calculate the cost
-  int m; cin >> m;
-  // got to add one for some reason
-  m +=1;
-  // Cents
-  int total = 0;
-  while (m--) {
-    string s; getline(cin, s);
-    rep (i, sz(s)) {
-      // start counting the money
-      if (umap.find(s[i]) != umap.end()) {
-        total += umap[s[i]];
-      }
+
+int n = 5 * 100000;
+bool prime[500001];
+void SieveOfEratosthenes(vi &prime1)
+{
+  // Create a boolean array
+  // "prime[0..n]" and initialize
+  // all entries it as true.
+  // A value in prime[i] will
+  // finally be false if i is
+  // Not a prime, else true.
+  memset(prime, true, sizeof(prime));
+ 
+  for (int p = 2; p * p <= n; p++)
+    {
+      // If prime[p] is not changed,
+      // then it is a prime
+      if (prime[p] == true)
+        {
+          // Update all multiples
+          // of p greater than or
+          // equal to the square of it
+          // numbers which are multiple
+          // of p and are less than p^2
+          // are already been marked.
+          for (int i = p * p; i <= n; i += p)
+            prime[i] = false;
+        }
     }
+  for (int p = 2; p <= n; p++) {
+    if (prime[p]) {
+      prime1.push_back(p);
+    }
+    
   }
-  double dollars = (double) total / 100;
-  cout << setprecision(2) << fixed;
-  cout << dollars << "$"<< '\n';
-  return;
+} 
+void solve(vi &prime1) {
 }
 int main() {
   int t;
   cin >> t;
+  vi prime1;
+  SieveOfEratosthenes(prime1);
   while (t--) {
-    solve();
+    solve(prime1);
   }
   return 0;
 }

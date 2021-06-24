@@ -66,32 +66,11 @@ template <class F> F ceildiv(F a, F d) { F res = a / d; if (res * d != a) { res 
 int dx[4] = {1,0,-1,0};
 int dy[4] = {0,1,0,-1};
 void solve() {
-  int k; cin >> k;
-  unordered_map <char,int> umap;
-  umap.reserve(k);
-  while (k--) {
-    char c; int cents; cin >> c >> cents;
-    umap[c] = cents;
-  }
-  //M line of text to shift through and calculate the cost
-  int m; cin >> m;
-  // got to add one for some reason
-  m +=1;
-  // Cents
-  int total = 0;
-  while (m--) {
-    string s; getline(cin, s);
-    rep (i, sz(s)) {
-      // start counting the money
-      if (umap.find(s[i]) != umap.end()) {
-        total += umap[s[i]];
-      }
-    }
-  }
-  double dollars = (double) total / 100;
-  cout << setprecision(2) << fixed;
-  cout << dollars << "$"<< '\n';
-  return;
+  int a, b, c; cin >> a >> b >> c;
+  int first =(int) pow(10,a -1);
+  int second = (int) pow(10, b - 1)  + (int) pow(10,c-1);
+
+  cout << first << " " << second << '\n';
 }
 int main() {
   int t;
