@@ -63,43 +63,45 @@ template <class F> void fill_m(vector<F> &v, int num) {
   }
 }
 template <class F> F ceildiv(F a, F d) { F res = a / d; if (res * d != a) { res += 1&((a<0)^(d>0)); } return res; }
+template<class T> void remdup(vector<T> &v) { // sort and remove duplicates
+  sort(all(v)); v.erase(unique(all(v)), end(v));
+}
 int dx[4] = {1,0,-1,0};
 int dy[4] = {0,1,0,-1};
-
-int n = 5 * 100000;
-vector<bool> prime;
-vi prime1;
-vector<ll> prefixsums;
-void calc() {
-  prime.assign(n, true);
-  for (int i = 2; i * i <= n; i++) {
-    if (prime[i] == true) {
-      for (int j = i * i; j <= n; j += i) {
-        prime[j] = false;
+void solve() {
+  int n; cin >> n;
+  if (n%2 != 0) {
+    vi kekw;
+    rep (i,1, n + 1) {
+      if ( i % 2 != 0) {
+        if (i == n) {
+          kekw.pb(i);
+        } else {
+          kekw.pb (i + 1);
+        }
+      } else {
+        kekw.pb(i - 1);
       }
     }
+    int temp = kekw[n - 1];
+    kekw[n - 1] = kekw[n - 2];
+    kekw[n-2] = temp;
+    print_v(kekw);
+    return;
   }
-  rep (i,2, n) {
-    if (prime[i] == true) {
-      prime1.pb(i);
+  rep (i,1, n + 1) {
+    if (i %2 != 0) {
+      cout << i + 1 << " ";
+    } else {
+      cout << i - 1 << " ";
     }
   }
-  prefixsums.assign(sz(prime1), 0);
-  rep(i,sz(prime1)) {
-    if (i > 0) prefixsums[i] += prefixsums[i - 1];
-    prefixsums[i] += prime1[i];
-  }
-}
-void solve() {
-  int x,k; cin >> x >> k;
-  int index = (int)lowb(prime1,x);
-  cout << prime1[k + index - 1] << " " <<prefixsums[k + index - 1] - (index == 0 ? 0 : prefixsums[index - 1]) << '\n';
+  cout << endl;
   return;
 }
 int main() {
   int t;
   cin >> t;
-  calc();
   while (t--) {
     solve();
   }

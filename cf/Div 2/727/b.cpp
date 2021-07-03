@@ -63,43 +63,34 @@ template <class F> void fill_m(vector<F> &v, int num) {
   }
 }
 template <class F> F ceildiv(F a, F d) { F res = a / d; if (res * d != a) { res += 1&((a<0)^(d>0)); } return res; }
+template<class T> void remdup(vector<T> &v) { // sort and remove duplicates
+  sort(all(v)); v.erase(unique(all(v)), end(v));
+}
 int dx[4] = {1,0,-1,0};
 int dy[4] = {0,1,0,-1};
-
-int n = 5 * 100000;
-vector<bool> prime;
-vi prime1;
-vector<ll> prefixsums;
-void calc() {
-  prime.assign(n, true);
-  for (int i = 2; i * i <= n; i++) {
-    if (prime[i] == true) {
-      for (int j = i * i; j <= n; j += i) {
-        prime[j] = false;
-      }
-    }
-  }
-  rep (i,2, n) {
-    if (prime[i] == true) {
-      prime1.pb(i);
-    }
-  }
-  prefixsums.assign(sz(prime1), 0);
-  rep(i,sz(prime1)) {
-    if (i > 0) prefixsums[i] += prefixsums[i - 1];
-    prefixsums[i] += prime1[i];
-  }
-}
 void solve() {
-  int x,k; cin >> x >> k;
-  int index = (int)lowb(prime1,x);
-  cout << prime1[k + index - 1] << " " <<prefixsums[k + index - 1] - (index == 0 ? 0 : prefixsums[index - 1]) << '\n';
+  int n,q; cin >> n >> q;
+  vector <char> love(n + 1);
+  vi prefixsums(n + 1);
+  rep (i,n) cin >> love[i + 1];
+  // Calculate the prefix sums
+  int sum = 0;
+  rep (i, n + 1) {
+    if (i == 0) {
+      prefixsums[i] = 0;
+      continue;
+    }
+    sum += ((int(love[i] - 'a')) + 1 );
+    prefixsums[i] = sum;
+  }
+  while (q--) {
+    int l,r; cin >> l >> r;
+    cout << prefixsums[r] - prefixsums[l - 1] << '\n';
+  }
   return;
 }
 int main() {
-  int t;
-  cin >> t;
-  calc();
+  int t = 1;
   while (t--) {
     solve();
   }

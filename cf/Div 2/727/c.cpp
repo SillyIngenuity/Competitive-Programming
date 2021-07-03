@@ -63,43 +63,43 @@ template <class F> void fill_m(vector<F> &v, int num) {
   }
 }
 template <class F> F ceildiv(F a, F d) { F res = a / d; if (res * d != a) { res += 1&((a<0)^(d>0)); } return res; }
+template<class T> void remdup(vector<T> &v) { // sort and remove duplicates
+  sort(all(v)); v.erase(unique(all(v)), end(v));
+}
 int dx[4] = {1,0,-1,0};
 int dy[4] = {0,1,0,-1};
-
-int n = 5 * 100000;
-vector<bool> prime;
-vi prime1;
-vector<ll> prefixsums;
-void calc() {
-  prime.assign(n, true);
-  for (int i = 2; i * i <= n; i++) {
-    if (prime[i] == true) {
-      for (int j = i * i; j <= n; j += i) {
-        prime[j] = false;
-      }
-    }
-  }
-  rep (i,2, n) {
-    if (prime[i] == true) {
-      prime1.pb(i);
-    }
-  }
-  prefixsums.assign(sz(prime1), 0);
-  rep(i,sz(prime1)) {
-    if (i > 0) prefixsums[i] += prefixsums[i - 1];
-    prefixsums[i] += prime1[i];
-  }
-}
 void solve() {
-  int x,k; cin >> x >> k;
-  int index = (int)lowb(prime1,x);
-  cout << prime1[k + index - 1] << " " <<prefixsums[k + index - 1] - (index == 0 ? 0 : prefixsums[index - 1]) << '\n';
+  // the stuff is 10^18 or something, use ll
+  ll n, k , x; cin >> n >> k >> x;
+  vector<ll> students(n);
+  rep (i,n) cin >> students[i];
+  sort(all(students));
+  // calculate the gaps between every adjacent element
+  // maintain a min heap
+  vector<ll> gaps;
+  rep (i,n-1) {
+    ll temp = students[i + 1] - students[i];
+    if (x < temp) {
+      gaps.pb(temp);
+    }
+  }
+  sort(all(gaps));
+  ll ans = gaps.size() + 1;
+  for (auto const gap : gaps) {
+    ll temp = ceildiv(gap,x)- 1;
+    // this is how many people you have to add to fill in that gap
+    // this is how many groups there are in total now
+    debug(temp);
+    if (k - temp >= 0) {
+      k -= temp;
+      ans -= 1;
+    }
+  }
+  cout << ans << '\n';
   return;
 }
 int main() {
-  int t;
-  cin >> t;
-  calc();
+  int t = 1;
   while (t--) {
     solve();
   }

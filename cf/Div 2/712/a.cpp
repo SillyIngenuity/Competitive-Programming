@@ -12,7 +12,6 @@ using namespace std;
 #define pb push_back
 #define sz(x) int((x).size())
 #define all(x) (x).begin(), (x).end()
-#define sum(a)     ( accumulate ((a).begin(), (a).end(), 0ll))
 #define mine(a)    (*min_element((a).begin(), (a).end()))
 #define maxe(a)    (*max_element((a).begin(), (a).end()))
 #define mini(a)    ( min_element((a).begin(), (a).end()) - (a).begin())
@@ -63,37 +62,49 @@ template <class F> void fill_m(vector<F> &v, int num) {
   }
 }
 template <class F> F ceildiv(F a, F d) { F res = a / d; if (res * d != a) { res += 1&((a<0)^(d>0)); } return res; }
+template<class T> void remdup(vector<T> &v) { // sort and remove duplicates
+  sort(all(v)); v.erase(unique(all(v)), end(v));
+}
+template <class T> T sum(vector<T> &v) {
+  if (v.empty()) return 0LL;
+  T sum = v[0];
+  for (int i = 1; i < (int) v.size(); i++) {
+    sum += v[i];
+  }
+  return sum;
+}
 int dx[4] = {1,0,-1,0};
 int dy[4] = {0,1,0,-1};
-int getint () {
-  int n;
-  cin >> n;
-  return n;
-}
 void solve() {
-  int n, r;
-  while ((n = getint()) != -1 &&(r = getint()) != -1) {
-    debug(n,r);
-    if (n == r) {
-      cout << "*\n";
-      continue;
+  string s; cin >> s;
+  int counter = 0;
+  for (auto const c : s) {
+    if (c == 'a') {
+      counter++;
     }
-    vi arr(1e4 + 1);
-    vi alivers;
-    rep (i, r) {
-      int temp; cin >> temp;
-      arr[temp] = 1;
-    }
-    rep (i, 1e4 + 1) {
-      if (arr[i] != 1) {
-        alivers.pb(i);
-      }
-    }
-    print_v(alivers);
   }
+  if (counter == sz(s)) {
+    cout << "NO\n";
+  } else {
+    cout << "YES\n";
+    string s1 = s;
+    s1 += 'a';
+    string s2 = s1;
+    reverse(all(s1));
+    debug(s1,s2);
+    if (s1 != s2) {
+      cout << s2 << '\n';
+    } else {
+      cout << 'a' + s << '\n';
+    }
+  }
+  return;
 }
 int main() {
-  int t = 1;
+  ios::sync_with_stdio(false);
+  cin.tie(0);
+  int t;
+  cin >> t;
   while (t--) {
     solve();
   }

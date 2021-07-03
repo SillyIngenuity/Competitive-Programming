@@ -65,41 +65,38 @@ template <class F> void fill_m(vector<F> &v, int num) {
 template <class F> F ceildiv(F a, F d) { F res = a / d; if (res * d != a) { res += 1&((a<0)^(d>0)); } return res; }
 int dx[4] = {1,0,-1,0};
 int dy[4] = {0,1,0,-1};
+void solve() {
+  ll a,b; cin >> a >> b;
+  // Intuitively, if b > a then its impossible... formal proof who? :p
+  ll x = 0;
+  if (b > a) {
+    cout << "-1\n";
+    return;
+    // This case is trivial
+  } else if (b == a) {
+    cout << "0\n";
+    return;
+  } else {
+    int n = (int)log2(a) + 1;
+    rep (i, n) {
+      ll bita = (1ll << i) & a;
+      ll bitb = (1ll << i) & b;
 
-int n = 5 * 100000;
-vector<bool> prime;
-vi prime1;
-vector<ll> prefixsums;
-void calc() {
-  prime.assign(n, true);
-  for (int i = 2; i * i <= n; i++) {
-    if (prime[i] == true) {
-      for (int j = i * i; j <= n; j += i) {
-        prime[j] = false;
+      if (bitb > bita) {
+        // impossible
+        cout << "-1\n";
+        return;
+      } else if (bita > bitb) {
+        x |= 1ll << i;
       }
     }
   }
-  rep (i,2, n) {
-    if (prime[i] == true) {
-      prime1.pb(i);
-    }
-  }
-  prefixsums.assign(sz(prime1), 0);
-  rep(i,sz(prime1)) {
-    if (i > 0) prefixsums[i] += prefixsums[i - 1];
-    prefixsums[i] += prime1[i];
-  }
-}
-void solve() {
-  int x,k; cin >> x >> k;
-  int index = (int)lowb(prime1,x);
-  cout << prime1[k + index - 1] << " " <<prefixsums[k + index - 1] - (index == 0 ? 0 : prefixsums[index - 1]) << '\n';
+  cout << x << '\n';
   return;
 }
 int main() {
   int t;
   cin >> t;
-  calc();
   while (t--) {
     solve();
   }

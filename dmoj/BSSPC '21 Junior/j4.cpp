@@ -12,7 +12,6 @@ using namespace std;
 #define pb push_back
 #define sz(x) int((x).size())
 #define all(x) (x).begin(), (x).end()
-#define sum(a)     ( accumulate ((a).begin(), (a).end(), 0ll))
 #define mine(a)    (*min_element((a).begin(), (a).end()))
 #define maxe(a)    (*max_element((a).begin(), (a).end()))
 #define mini(a)    ( min_element((a).begin(), (a).end()) - (a).begin())
@@ -63,29 +62,61 @@ template <class F> void fill_m(vector<F> &v, int num) {
   }
 }
 template <class F> F ceildiv(F a, F d) { F res = a / d; if (res * d != a) { res += 1&((a<0)^(d>0)); } return res; }
+template<class T> void remdup(vector<T> &v) { // sort and remove duplicates
+  sort(all(v)); v.erase(unique(all(v)), end(v));
+}
+template <class T> T sum(vector<T> &v) {
+  if (v.empty()) return 0LL;
+  T sum = v[0];
+  for (int i = 1; i < (int) v.size(); i++) {
+    sum += v[i];
+  }
+  return sum;
+}
 int dx[4] = {1,0,-1,0};
 int dy[4] = {0,1,0,-1};
 void solve() {
   int x, n; cin >> x >> n;
-  vector<tuple<int,int>> soups;
-  // lets do timer, temp
+  // Maintain min heap for the lifespan of each soup
+  priority_queue<pair<int,int>, vector<pair<int,int>>, greater<pair<int,int>>> storage;
   while (n--) {
-    int temp, timer; cin >> temp >> timer;
-    soups.pb(make_tuple(timer,temp));
+    // temps first, then time
+    int temp,time; cin >> temp >> time;
+    storage.push(make_pair(temp,time));
   }
-  
-  int drink = 0;
-  for (auto [timer,temp] : soups) {
-    int kekw = temp - timer;
-    if (x >= kekw) {
-      drink++;
+  // Alright some cool tricks coming up
+  bool flag = true;
+  // If the pq is empty we stop the loop
+  // we just want to compute up to that point
+  int ans = 0;
+  int timer = 0;
+  while (flag) {
+    if (storage.empty()) {
+      // we're donezos
+      break;
     }
+    int currenttime = storage.top().second - timer * 1;
+    int currenttemp = storage.top().first - timer * 1;
+    if (currenttime >= 0  && currenttemp <= x) {
+      // We drink this
+      ans++;
+      storage.pop();
+    } else if (currenttime >= 0 && currenttemp > x) {
+      // literally just have to wait here and let timer++;
+      // do nothing
+    } else {
+      // the soup has gone bad here
+      storage.pop();
+    }
+    timer++;
   }
-  
-  cout << drink << '\n';
+  cout << ans << '\n';
 }
 int main() {
+  ios::sync_with_stdio(false);
+  cin.tie(0);
   int t = 1;
+  // cin >> t;
   while (t--) {
     solve();
   }

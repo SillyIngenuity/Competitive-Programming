@@ -63,43 +63,34 @@ template <class F> void fill_m(vector<F> &v, int num) {
   }
 }
 template <class F> F ceildiv(F a, F d) { F res = a / d; if (res * d != a) { res += 1&((a<0)^(d>0)); } return res; }
+template<class T> void remdup(vector<T> &v) { // sort and remove duplicates
+  sort(all(v)); v.erase(unique(all(v)), end(v));
+}
 int dx[4] = {1,0,-1,0};
 int dy[4] = {0,1,0,-1};
-
-int n = 5 * 100000;
-vector<bool> prime;
-vi prime1;
-vector<ll> prefixsums;
-void calc() {
-  prime.assign(n, true);
-  for (int i = 2; i * i <= n; i++) {
-    if (prime[i] == true) {
-      for (int j = i * i; j <= n; j += i) {
-        prime[j] = false;
+void solve() {
+  ll n; cin >> n;
+  vector<ll> arr(n + 1);
+  rep (i,n) cin >> arr[i + 1];
+  // Lets look at a bruteforce first
+  int counter = 0;
+  rep (i, 1, n + 1) {
+    for (int j = arr[i] - i; j < n + 1; j += arr[i]) {
+      if (j <= i) {
+        continue;
+      }
+      // 10^5 * 10^5 is 10^10... gotta keep this in mind next time to avoid overflow
+      if (i + j == arr[i] * arr[j]) {
+        counter++;
       }
     }
   }
-  rep (i,2, n) {
-    if (prime[i] == true) {
-      prime1.pb(i);
-    }
-  }
-  prefixsums.assign(sz(prime1), 0);
-  rep(i,sz(prime1)) {
-    if (i > 0) prefixsums[i] += prefixsums[i - 1];
-    prefixsums[i] += prime1[i];
-  }
-}
-void solve() {
-  int x,k; cin >> x >> k;
-  int index = (int)lowb(prime1,x);
-  cout << prime1[k + index - 1] << " " <<prefixsums[k + index - 1] - (index == 0 ? 0 : prefixsums[index - 1]) << '\n';
+  cout << counter << '\n';
   return;
 }
 int main() {
   int t;
   cin >> t;
-  calc();
   while (t--) {
     solve();
   }

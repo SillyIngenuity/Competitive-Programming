@@ -12,7 +12,6 @@ using namespace std;
 #define pb push_back
 #define sz(x) int((x).size())
 #define all(x) (x).begin(), (x).end()
-#define sum(a)     ( accumulate ((a).begin(), (a).end(), 0ll))
 #define mine(a)    (*min_element((a).begin(), (a).end()))
 #define maxe(a)    (*max_element((a).begin(), (a).end()))
 #define mini(a)    ( min_element((a).begin(), (a).end()) - (a).begin())
@@ -63,11 +62,24 @@ template <class F> void fill_m(vector<F> &v, int num) {
   }
 }
 template <class F> F ceildiv(F a, F d) { F res = a / d; if (res * d != a) { res += 1&((a<0)^(d>0)); } return res; }
+template<class T> void remdup(vector<T> &v) { // sort and remove duplicates
+  sort(all(v)); v.erase(unique(all(v)), end(v));
+}
+template <class T> T sum(vector<T> &v) {
+  if (v.empty()) return 0LL;
+  T sum = v[0];
+  for (int i = 1; i < (int) v.size(); i++) {
+    sum += v[i];
+  }
+  return sum;
+}
 int dx[4] = {1,0,-1,0};
 int dy[4] = {0,1,0,-1};
 void solve() {
 }
 int main() {
+  ios::sync_with_stdio(false);
+  cin.tie(0);
   int t;
   cin >> t;
   while (t--) {
